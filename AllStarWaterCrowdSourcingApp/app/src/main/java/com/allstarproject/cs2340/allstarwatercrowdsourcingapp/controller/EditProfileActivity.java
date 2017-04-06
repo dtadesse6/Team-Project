@@ -9,9 +9,11 @@ import android.widget.TextView;
 import android.widget.Button;
 import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.model.Model;
 import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.R;
+import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.model.ModelFacade;
 import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.model.RegisteredUser;
 
 /**
+ * Activity for EditProfile.  Acts as a controller controlling the UI functions
  * Created by Austin on 2/16/17.
  */
 
@@ -21,8 +23,8 @@ public class EditProfileActivity extends AppCompatActivity
      * variables to be used in this class.  Instance of model singleton,
      * instance of current user and instances of the View items to be displayed
      */
-    private Model model = Model.getInstance();
-    private RegisteredUser currentUser = model.getUser();
+    private final ModelFacade modelFacade = ModelFacade.getModelFacade();
+    private final RegisteredUser currentUser = Model.getUser();
     private TextView txtCurrentName;
     private TextView txtCurrentEmail;
     private EditText txtEmail;
@@ -31,10 +33,12 @@ public class EditProfileActivity extends AppCompatActivity
     private EditText txtConfPassword;
 
     /**
-     * onCreate method to instantiate the necessary views and listeners for this
-     * Activity
-     * @param savedInstanceState A thing that android mandates to populate
-     * your instance data
+     * onCreate method to instantiate the necessary buttons and text fields
+     * for the Edit Profile Screen.
+     * @param savedInstanceState the data which Android saves to populate
+     * data more quickly than the application starting up. It's basically
+     * caching everything so load up time is quicker when going back to the
+     * screen.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {

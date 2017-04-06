@@ -3,20 +3,20 @@ package com.allstarproject.cs2340.allstarwatercrowdsourcingapp.controller;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.R;
-import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.model.
-        RegisteredUser;
+import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.model.ModelFacade;
+import com.allstarproject.cs2340.allstarwatercrowdsourcingapp.model.RegisteredUser;
 
+import java.io.File;
 
 public class RegisterActivity extends AppCompatActivity
         implements View.OnClickListener {
-
     private Spinner spinner;
     private EditText txtUserName;
     private EditText txtName;
@@ -25,10 +25,13 @@ public class RegisterActivity extends AppCompatActivity
     private EditText txtConfPassword;
 
     /**
-     * onCreate used to setup RegisterActivity on creation
-     *
-     * @param savedInstanceState is bundled data passed in to use at creation
-     */
+     * onCreate used to setup RegisterActivity on creation. Instantiates all
+     * buttons and text fields associated with the Registration screen.
+     * @param savedInstanceState the data which Android saves to populate
+     * data more quickly than the application starting up. It's basically
+     * caching everything so load up time is quicker when going back to the
+     * screen.
+     * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,14 +53,17 @@ public class RegisterActivity extends AppCompatActivity
     }
 
     /**
-     * onClick method to handle the cancel button being clicked by returning
-     * you to Welcome
-     *
+     * This onClick takes redirects the user to the appropiate screen upon
+     * pressing a specific button. When the user presses the register button,
+     * their profile information will be stored in an instance of ModelFacade
+     * and then stored in a binary file (located in some mystery path within
+     * your file path) through saveBinary() in ModelFacade.
      * @param v the current view
      */
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
         case R.id.btnCancelRegister:
             Intent intent = new Intent(RegisterActivity.this,
                     WelcomeActivity.class);
@@ -83,43 +89,65 @@ public class RegisterActivity extends AppCompatActivity
                             txtName.getText().toString(),
                             txtEmail.getText().toString(),
                             spinner.getSelectedItem().toString());
+                    ModelFacade modelFacade = ModelFacade.getModelFacade();
+                    File file = new File(this.getFilesDir(),
+                            ModelFacade.DEFAULT_BINARY_FILE_NAME);
+                    Log.d("Saving", "About to save data. . .");
+                    modelFacade.saveBinary(file);
                     startActivity(intent2);
-                } else if (spinner.getSelectedItem().toString().
-                        equals("Manager")) {
+                } else if (spinner.getSelectedItem().toString().equals(
+                        "Manager")) {
                     new RegisteredUser(txtUserName.getText().toString(),
                             txtPassword.getText().toString(),
                             txtName.getText().toString(),
                             txtEmail.getText().toString(),
                             spinner.getSelectedItem().toString());
+                    ModelFacade modelFacade = ModelFacade.getModelFacade();
+                    File file = new File(this.getFilesDir(),
+                            ModelFacade.DEFAULT_BINARY_FILE_NAME);
+                    Log.d("Saving", "About to save data. . .");
+                    modelFacade.saveBinary(file);
                     startActivity(intent2);
-                } else if (spinner.getSelectedItem().toString().
-                        equals("Worker")) {
+                } else if (spinner.getSelectedItem().toString().equals(
+                        "Worker")) {
                     new RegisteredUser(txtUserName.getText().toString(),
                             txtPassword.getText().toString(),
                             txtName.getText().toString(),
                             txtEmail.getText().toString(),
                             spinner.getSelectedItem().toString());
+                    ModelFacade modelFacade = ModelFacade.getModelFacade();
+                    File file = new File(this.getFilesDir(),
+                            ModelFacade.DEFAULT_BINARY_FILE_NAME);
+                    Log.d("Saving", "About to save data. . .");
+                    modelFacade.saveBinary(file);
                     startActivity(intent2);
-                } else if (spinner.getSelectedItem().toString().
-                        equals("Admin")) {
+                } else if (spinner.getSelectedItem().toString().equals(
+                        "Admin")) {
                     new RegisteredUser(txtUserName.getText().toString(),
                             txtPassword.getText().toString(),
                             txtName.getText().toString(),
                             txtEmail.getText().toString(),
                             spinner.getSelectedItem().toString());
+                    ModelFacade modelFacade = ModelFacade.getModelFacade();
+                    File file = new File(this.getFilesDir(),
+                            ModelFacade.DEFAULT_BINARY_FILE_NAME);
+                    Log.d("Saving", "About to save data. . .");
+                    modelFacade.saveBinary(file);
                     startActivity(intent2);
                 } else {
-                    Toast.makeText(getApplication(),
-                            "User type not selected",
+                    Toast.makeText(getApplication(), "User type not selected",
                             Toast.LENGTH_LONG).show();
                 }
-            } else {
-                Toast.makeText(getApplication(), "Passwords Dont Match",
-                        Toast.LENGTH_LONG).show();
-                break;
             }
         default:
-            //this is here for checkstyle.
+            //this is here for checkstyle. Default is messed up because
+            // of fall through from prevuous branch opf the switch statement
+            //http://stackoverflow.com/questions/188461/switch-statement//
+            // -fallthrough-should-it-be-allowed
+
+
+            //I added the breaks to see if that will get rid of checkstyle
+            // but it did not go away - Yamin.
         }
     }
 }
